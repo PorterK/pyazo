@@ -27,12 +27,13 @@ class Gui(QWidget):
 
     #Set the window title even though it will not be seen
         self.setWindowTitle('Pyazo')
-
     #Make the window transparent
         self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
     #Maximize the window
         self.showMaximized()
+    #Enable mouse tracking
+        self.setMouseTracking(True)
     #Render the window
         self.show()
 
@@ -44,6 +45,10 @@ class Gui(QWidget):
 #release
     def mouseReleaseEvent(self, event):
         print('released!')
+#drag
+    def mouseMoveEvent(self, event):
+        if(event.buttons() == Qt.LeftButton):
+            print('dragging')
 
 
 #Main function
