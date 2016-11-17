@@ -10,7 +10,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QPainter, QColor, QFont, QCursor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QRect
 
 #Doing this the OOP way..
 class Gui(QWidget):
@@ -18,6 +18,9 @@ class Gui(QWidget):
 
     #Initialize the QApp/QWidget things
         super().__init__()
+        
+    #Add a default rectangle
+        self.rectangle = QRect(0, 0, 0, 0)
 
     #Build the window in a method to keep the init clean
         self.buildWindow()
@@ -37,11 +40,18 @@ class Gui(QWidget):
     #Render the window
         self.show()
 
+    def paintEvent(self, event):
+        qp = QPainter()
+        qp.begin(self)
+        qp.drawRect(self.rectangle)
+        qp.end()
 #Handle the mouse events below
-
 #press
     def mousePressEvent(self, event):
         print('mouse clicked!')
+        self.rectangle.setCoords(event.x(), event.y(), event.x() + 10, event.y() + 10)
+
+        self.repaint()
 #release
     def mouseReleaseEvent(self, event):
         print('released!')
