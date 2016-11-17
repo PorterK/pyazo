@@ -45,23 +45,27 @@ class Gui(QWidget):
         qp = QPainter()
         qp.begin(self)
     #Paint the rectangle
+        rectangleColor = QColor(200, 200, 200, 100)
+        qp.setBrush(rectangleColor)
+        qp.setPen(rectangleColor)
         qp.drawRect(self.rectangle)
         qp.end()
 #Handle the mouse events below
 #press
     def mousePressEvent(self, event):
-        print('mouse clicked!')
+# 'Mouse Click'
     #update reactangle coords
         self.rectangle.setCoords(event.x(), event.y(), event.x(), event.y())
     #repaint
         self.repaint()
 #release
     def mouseReleaseEvent(self, event):
-        print('released!')
+# 'Mouse Release'
+        self.setVisible(False)
 #drag
     def mouseMoveEvent(self, event):
         if(event.buttons() == Qt.LeftButton):
-            print('dragging')
+# 'Dragging'
         #update rectangle bottom left corner to the mouse pos
             self.rectangle.setLeft(event.x())
             self.rectangle.setBottom(event.y())
