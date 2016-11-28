@@ -75,15 +75,17 @@ class Gui(QWidget):
 #release
     def mouseReleaseEvent(self, event):
 # 'Mouse Release'
+
+    #Get the corners of our rectangle for use when actually taking the image from the screen
         topRightCorner = (self.rectangle.right(), self.rectangle.top())
         topLeftCorner = (self.rectangle.left(), self.rectangle.top())
 
         bottomRightCorner = (self.rectangle.right(), self.rectangle.bottom())
         bottomLeftCorner = (self.rectangle.left(), self.rectangle.bottom())
-
-        self.__fire('release', topLeftCorner, topRightCorner, bottomRightCorner, bottomLeftCorner)
-
+    #Hide the GUI after the button is released
         self.setVisible(False)
+    #Fire our 'release' event, use the handler we defined, call it after we hide the GUI (so we don't get an image of the GUI)
+        self.__fire('release', topLeftCorner, topRightCorner, bottomRightCorner, bottomLeftCorner)
 #drag
     def mouseMoveEvent(self, event):
         if(event.buttons() == Qt.LeftButton):
