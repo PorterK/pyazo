@@ -34,7 +34,7 @@ class Gui(QWidget):
         self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
     #Maximize the window
-        self.showMaximized()
+        self.resize(1920, 1080)
     #Enable mouse tracking
         self.setMouseTracking(True)
     #Render the window
