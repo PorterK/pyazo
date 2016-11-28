@@ -16,6 +16,8 @@ from PyQt5.QtCore import Qt, QRect
 class Gui(QWidget):
     def __init__(self):
 
+        self.__eventHandlers = []
+
     #Initialize the QApp/QWidget things
         super().__init__()
 
@@ -24,6 +26,18 @@ class Gui(QWidget):
 
     #Build the window in a method to keep the init clean
         self.buildWindow()
+
+#Custom event handling
+    #Add events
+    def on(self, eventName, handler):
+        self.__eventHandlers.append([eventName, handler])
+
+    #Fire events
+    def __fire(self, eventName, *args):
+        for event in self.__eventHandlers:
+            if(event[0] == eventName):
+                event[1](*args)
+
 
 #Build the window
     def buildWindow(self):
@@ -61,6 +75,14 @@ class Gui(QWidget):
 #release
     def mouseReleaseEvent(self, event):
 # 'Mouse Release'
+        topRightCorner = (self.rectangle.right(), self.rectangle.top())
+        topLeftCorner = (self.rectangle.left(), self.rectangle.top())
+
+        bottomRightCorner = (self.rectangle.right(), self.rectangle.bottom())
+        bottomLeftCorner = (self.rectangle.left(), self.rectangle.bottom())
+
+        self.__fire('release', topLeftCorner, topRightCorner, bottomRightCorner, bottomLeftCorner)
+
         self.setVisible(False)
 #drag
     def mouseMoveEvent(self, event):
