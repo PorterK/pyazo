@@ -17,7 +17,7 @@ Please report any bugs to the GitHub Issues section-- not to me directly.
 
 - [x] Make the app skeleton
 - [x] Add the graphical elements
-- [ ] Actually save images
+- [x] Actually save images
 - [ ] Create the backend API for image uploads
 - [ ] Upload images to the backend
 - [ ] Open image in the browser

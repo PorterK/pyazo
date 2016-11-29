@@ -10,7 +10,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QPainter, QColor, QFont, QCursor
-from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtCore import Qt, QRect, QTimer
 
 #Doing this the OOP way..
 class Gui(QWidget):
@@ -22,7 +22,9 @@ class Gui(QWidget):
         super().__init__()
 
     #Add a default rectangle
-        self.rectangle = QRect(0, 0, 0, 0)
+        self.__rectangle = QRect(0, 0, 0, 0)
+        self.__relativeX = 0
+        self.__relativeY = 0
 
     #Build the window in a method to keep the init clean
         self.buildWindow()
@@ -62,14 +64,17 @@ class Gui(QWidget):
         rectangleColor = QColor(200, 200, 200, 100)
         qp.setBrush(rectangleColor)
         qp.setPen(rectangleColor)
-        qp.drawRect(self.rectangle)
+        qp.drawRect(self.__rectangle)
         qp.end()
 #Handle the mouse events below
 #press
     def mousePressEvent(self, event):
 # 'Mouse Click'
     #update reactangle coords
-        self.rectangle.setCoords(event.x(), event.y(), event.x(), event.y())
+        self.__rectangle.setCoords(event.x(), event.y(), event.x(), event.y())
+
+        self.__relativeX = event.x()
+        self.__relativeY = event.y()
     #repaint
         self.repaint()
 #release
@@ -77,22 +82,39 @@ class Gui(QWidget):
 # 'Mouse Release'
 
     #Get the corners of our rectangle for use when actually taking the image from the screen
-        topRightCorner = (self.rectangle.right(), self.rectangle.top())
-        topLeftCorner = (self.rectangle.left(), self.rectangle.top())
+        x = self.__rectangle.left()
+        y = self.__rectangle.top()
 
-        bottomRightCorner = (self.rectangle.right(), self.rectangle.bottom())
-        bottomLeftCorner = (self.rectangle.left(), self.rectangle.bottom())
+        width = self.__rectangle.width()
+        height = self.__rectangle.height()
+
+        self.__rectangle.setCoords(0, 0, 0, 0)
+        self.update()
+
     #Hide the GUI after the button is released
         self.setVisible(False)
     #Fire our 'release' event, use the handler we defined, call it after we hide the GUI (so we don't get an image of the GUI)
-        self.__fire('release', topLeftCorner, topRightCorner, bottomRightCorner, bottomLeftCorner)
+    #Use a timer to create this effect, executing our handler in the QT event loop
+    #also use a lambda function because singleShot requires anonymity 
+        QTimer.singleShot(0, lambda: self.__fire('release', x, y, width, height))
 #drag
     def mouseMoveEvent(self, event):
         if(event.buttons() == Qt.LeftButton):
 # 'Dragging'
         #update rectangle bottom left corner to the mouse pos
-            self.rectangle.setLeft(event.x())
-            self.rectangle.setBottom(event.y())
+            if(event.x() > self.__relativeX):
+                self.__rectangle.setRight(event.x())
+                self.__rectangle.setLeft(self.__relativeX)
+            elif(event.x() < self.__relativeX):
+                self.__rectangle.setLeft(event.x())
+                self.__rectangle.setRight(self.__relativeX)
+
+            if(event.y() < self.__relativeY):
+                self.__rectangle.setTop(event.y())
+                self.__rectangle.setBottom(self.__relativeY)
+            elif(event.y() > self.__relativeY):
+                self.__rectangle.setBottom(event.y())
+                self.__rectangle.setTop(self.__relativeY)
         #repaint
             self.repaint()
 
