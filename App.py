@@ -2,8 +2,11 @@ from Gui import *
 import sys
 import tempfile
 import uuid
+import requests
+import webbrowser
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QCursor, QScreen
+
 
 def run():
     global app
@@ -37,8 +40,22 @@ def saveTempImage(pixmap):
     #Generate a random uuid (these will never collide)
         randomId = uuid.uuid1()
 
+        image = '{}/{}.png'.format(tmpdir, randomId.hex);
+
         pixmap.save('{}/{}.png'.format(tmpdir, randomId.hex), 'PNG')
         print('Saved to {}/{}.png!!'.format(tmpdir, randomId.hex))
+        sendImageToServer(image)
 
+def sendImageToServer(image):
+    url = 'http://localhost:3000/api/upload' #very very temporary (for testing), will have a config soon.
+    files = {'image': open(image, 'rb')}
+
+    r = requests.post(url, files=files)
+    print(r.text)
+    openBrowser(r.text)
+
+def openBrowser(url):
+    webbrowser.open(url)
+    sys.exit(1)
 
 run()
