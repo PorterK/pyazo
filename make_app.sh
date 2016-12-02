@@ -1,2 +1,2 @@
 #!/bin/bash
-pyinstaller -F -w --hidden-import=PyQt5 App.py
+pyinstaller -F -w --distpath="./dist" -p "./modules/requests" App.py

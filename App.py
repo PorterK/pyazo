@@ -2,8 +2,12 @@ from Gui import *
 import sys
 import tempfile
 import uuid
-import requests
 import webbrowser
+from multiprocessing import Queue
+
+sys.path.append('./modules')
+
+import requests
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QCursor, QScreen
 

@@ -8,6 +8,9 @@
 
 #import all the things
 import sys
+
+sys.path.append('./modules')
+
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QPainter, QColor, QFont, QCursor
 from PyQt5.QtCore import Qt, QRect, QTimer
@@ -95,7 +98,7 @@ class Gui(QWidget):
         self.setVisible(False)
     #Fire our 'release' event, use the handler we defined, call it after we hide the GUI (so we don't get an image of the GUI)
     #Use a timer to create this effect, executing our handler in the QT event loop
-    #also use a lambda function because singleShot requires anonymity 
+    #also use a lambda function because singleShot requires anonymity
         QTimer.singleShot(0, lambda: self.__fire('release', x, y, width, height))
 #drag
     def mouseMoveEvent(self, event):
