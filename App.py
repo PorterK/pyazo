@@ -37,7 +37,7 @@ def doRelease(x, y, width, height):
     height: {}
     '''.format(x, y, width, height))
 
-    saveTempImage(screen.grabWindow(1, x, y, width / 2, height / 2))
+    saveTempImage(screen.grabWindow(1, x, y, width, height))
 
 def saveTempImage(pixmap):
     with tempfile.TemporaryDirectory() as tmpdir:
