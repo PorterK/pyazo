@@ -50,10 +50,13 @@ class Gui(QWidget):
     #Set the window title even though it will not be seen
         self.setWindowTitle('Pyazo')
     #Make the window transparent
-        self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
-        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        #self.setAttribute(Qt.WA_NoSystemBackground, True)
+        #self.setAttribute(Qt.WA_TranslucentBackground, True)
+        self.setWindowOpacity(.15)
+        self.setAttribute(Qt.WA_PaintOnScreen)
     #Maximize the window
-        self.resize(1920, 1080)
+        self.showFullScreen()
     #Enable mouse tracking
         self.setMouseTracking(True)
     #Render the window
@@ -64,7 +67,7 @@ class Gui(QWidget):
         qp = QPainter()
         qp.begin(self)
     #Paint the rectangle
-        rectangleColor = QColor(200, 200, 200, 100)
+        rectangleColor = QColor(0, 0, 0, 100)
         qp.setBrush(rectangleColor)
         qp.setPen(rectangleColor)
         qp.drawRect(self.__rectangle)
@@ -93,7 +96,6 @@ class Gui(QWidget):
 
         self.__rectangle.setCoords(0, 0, 0, 0)
         self.update()
-
     #Hide the GUI after the button is released
         self.setVisible(False)
     #Fire our 'release' event, use the handler we defined, call it after we hide the GUI (so we don't get an image of the GUI)

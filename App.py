@@ -10,6 +10,7 @@ sys.path.append('./modules')
 import requests
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QCursor, QScreen
+from PyQt5.QtCore import Qt
 
 
 def run():
@@ -17,7 +18,7 @@ def run():
 #Instantiate our app and Gui stuff.
     app = QApplication(sys.argv)
     gui = Gui()
-
+    
     gui.on('release', doRelease)
 #Make the cursor the "cross cursor" for effect
     app.setOverrideCursor(QCursor(Qt.CrossCursor))
