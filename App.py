@@ -38,7 +38,7 @@ def doRelease(x, y, width, height):
     height: {}
     '''.format(x, y, width, height))
 
-    saveTempImage(screen.grabWindow(1, x, y, width, height))
+    saveTempImage(screen.grabWindow(0, x, y, width, height))
 
 def saveTempImage(pixmap):
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -52,7 +52,7 @@ def saveTempImage(pixmap):
         sendImageToServer(image)
 
 def sendImageToServer(image):
-    url = 'http://localhost:3000/api/upload' #very very temporary (for testing), will have a config soon.
+    url = 'http://pyazo.net/api/upload' #very very temporary (for testing), will have a config soon.
     files = {'image': open(image, 'rb')}
 
     r = requests.post(url, files=files)
